@@ -54,7 +54,9 @@ export class ReglementService {
     reglementsearch=[];
   REGLEMENTS = [];
   Countfacture=[];
-  api: string = environment.apiUrl;
+  
+  api: string = "http://localhost:9090";
+ // api: string = environment.apiUrl;
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _refresh$ = new Subject<void>();
@@ -90,6 +92,8 @@ export class ReglementService {
   }
 
   GetAllReglements(): Observable<Reglement[]> {
+    
+    console.log('Fetching from:', this.api + "/reglement/all"); 
     return this.http.get<Reglement[]>(this.api + "/reglement/all")
   }
   

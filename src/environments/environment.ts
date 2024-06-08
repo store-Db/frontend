@@ -4,11 +4,13 @@
 
 export const environment = {
   production: false,
-  hmr: false,
+  hmr: false , 
   apiUrl: 'http://localhost:9090'
 };
 
 /*
+// apiUrl: 'http://spring-boot-app-service:9090'  apiUrl: '/api'
+
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *
