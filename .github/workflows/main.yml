@@ -40,8 +40,8 @@ jobs:
       - name: Checkout manifests repository
         uses: actions/checkout@v2
         with:
-          repository: store-Db/manifest
-          path: manifests
+          repository: manifest
+          path: manifest/mani/frontend/dep.yaml
 
       - name: Update manifest
         run: |
