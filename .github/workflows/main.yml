@@ -40,12 +40,12 @@ jobs:
       - name: Checkout manifests repository
         uses: actions/checkout@v2
         with:
-          repository: manifest
-          path: manifest/mani/frontend/dep.yaml
+          repository: store-Db/manifest
+          path: manifets
 
       - name: Update manifest
         run: |
-          sed -i 's#image: .*$#image: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3#g' manifest/mani/frontend/dep.yaml
+          sed -i 's#image: .*$#image: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3#g' manifets/mani/frontend/dep.yaml
 
       - name: Commit and push changes
         run: |
