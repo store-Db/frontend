@@ -45,6 +45,7 @@ jobs:
 
       - name: Update manifest
         run: |
+          ls -l manifests/mani/frontend  # Check if the directory exists and list its contents
           sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3"'#g' manifests/mani/frontend/dep.yaml
 
       - name: Commit and push changes
