@@ -36,3 +36,33 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3
+
+      - name: Checkout manifests repository
+        uses: actions/checkout@v2
+        with:
+          repository: store-Db/manifest
+          path: manifests
+
+      - name: Update manifest
+        run: |
+          sed -i 's#image: .*$#image: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3#g' manifests/mani/frontend/dep.yaml
+
+      - name: Commit and push changes
+        run: |
+          cd manifests
+          git config --global user.email "bentarjem.sara@esprit.tn"
+          git config --global user.name "sara-8"
+          git add .
+          git commit -m "Update Angular app image to v0.3"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync Argo CD application
+        run: |
+          argocd app sync angular-app
+        env:
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+          ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
+          ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
+
