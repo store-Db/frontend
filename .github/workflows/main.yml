@@ -45,7 +45,7 @@ jobs:
 
       - name: Update manifest
         run: |
-          sed -i 's#image: .*$#image: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3#g' manifests/mani/frontend/dep.yaml
+          sed -i 's#image: .*$#image: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3#g' manifest/mani/frontend/dep.yaml
 
       - name: Commit and push changes
         run: |
