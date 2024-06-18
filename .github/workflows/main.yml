@@ -2,13 +2,13 @@ name: CI/CD for Angular
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -40,18 +40,18 @@ jobs:
       - name: Checkout manifests repository
         uses: actions/checkout@v2
         with:
-          repository: store-Db/manifest/mani
-          path: manifets
+          repository: store-Db/manifest
+          path: manifests
 
       - name: Update manifest
         run: |
-          sed -i 's#image: .*$#image: ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3#g' manifets/frontend/dep.yaml
+          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3"'#g' manifests/mani/frontend/dep.yaml
 
       - name: Commit and push changes
         run: |
           cd manifests
-          git config --global user.email "bentarjem.sara@esprit.tn"
-          git config --global user.name "sara-8"
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           git add .
           git commit -m "Update Angular app image to v0.3"
           git push
@@ -65,4 +65,3 @@ jobs:
           ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
           ARGOCD_USERNAME: ${{ secrets.ARGOCD_USERNAME }}
           ARGOCD_PASSWORD: ${{ secrets.ARGOCD_PASSWORD }}
-
