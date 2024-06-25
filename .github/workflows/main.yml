@@ -32,10 +32,10 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3 .
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.4 .
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.4
 
       - name: Checkout manifests repository
         uses: actions/checkout@v2
@@ -46,7 +46,7 @@ jobs:
       - name: Update manifest
         run: |
           ls -l  manifests/work  # Check if the directory exists and list its contents
-          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3"'#g' manifests/work/front.yaml
+          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.4"'#g' manifests/work/front.yaml
 
       - name: Commit and push changes
         run: |
@@ -54,7 +54,7 @@ jobs:
           git config --global user.email "bentarjem.sara@esprit.tn"
           git config --global user.name "sara-8"
           git add .
-          git commit -m "Update Angular app image to v0.3"
+          git commit -m "Update Angular app image to v0.4"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
