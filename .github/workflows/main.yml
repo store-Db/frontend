@@ -32,10 +32,14 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.5 .
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.sha }} .
+        env:
+          COMMIT_SHA: ${{ github.sha }}
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.5
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.sha }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
 
       - name: Checkout manifests repository
         uses: actions/checkout@v2
@@ -47,7 +51,9 @@ jobs:
       - name: Update manifest
         run: |
           ls -l  manifests/work  # Check if the directory exists and list its contents
-          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.5"'#g' manifests/work/front.yaml
+          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:${{ github.sha }}"'#g' manifests/work/front.yaml
+        env:
+          COMMIT_SHA: ${{ github.sha }}
 
       - name: Commit and push changes
         run: |
@@ -55,7 +61,8 @@ jobs:
           git config --global user.email "bentarjem.sara@esprit.tn"
           git config --global user.name "sara-8"
           git add .
-          git commit -m "Update Angular app image to v0.5"
+          git commit -m "Update Angular app image to $COMMIT_SHA"
           git push https://store-Db:${{ secrets.PAT_GITHUB }}@github.com/store-Db/manifest.git HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
+          COMMIT_SHA: ${{ github.sha }}
