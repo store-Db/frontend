@@ -46,13 +46,13 @@ jobs:
       - name: Update manifest
         run: |
           ls -l manifests/mani/frontend  # Check if the directory exists and list its contents
-          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3"'#g' manifests/mani/frontend/dep.yaml
+          sed -i 's#image: .*$#image: '"${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:v0.3"'#g' manifests/work/front.yaml
 
       - name: Commit and push changes
         run: |
           cd manifests
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "bentarjem.sara@esprit.tn"
+          git config --global user.name "sara-8"
           git add .
           git commit -m "Update Angular app image to v0.3"
           git push
