@@ -36,6 +36,33 @@ jobs:
         env:
           COMMIT_SHA: ${{ github.sha }}
 
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+
+      - name: Wait before Trivy scan 
+        run: sleep 0.5
+
+      - name: Scan Docker image and generate JSON report
+        run: |
+          trivy image --format json --output trivy-report.json --severity HIGH,CRITICAL ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:${{ github.sha }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+
+      - name: Push Trivy report to another repository
+        run: |
+          git clone https://github.com/store-Db/trivy-report.git
+          cd trivy-report
+          mv ../trivy-report.json ./trivy-report-${{ github.sha }}.json
+          git config --global user.email "bentarjem.sara@esprit.tn"
+          git config --global user.name "sara-8"
+          git add .
+          git commit -m "Add Trivy scan report for commit ${{ github.sha }}"
+          git push https://store-Db:${{ secrets.PAT_GITHUB }}@github.com/store-Db/trivy-report.git HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/angular-app:${{ github.sha }}
         env:
