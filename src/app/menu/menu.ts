@@ -16,15 +16,6 @@ export const menu: CoreMenu[] = [
     icon: "inbox",
     url: "reglement",
   },
-  {
-    id: 'Produit',
-    title: 'Produit',
-    type: 'collapsible',
-    icon: 'shopping-cart',
-    badge: {
-      title: '2',
-      classes: 'badge-light-warning badge-pill'
-    },
     children: [
       {
         id: 'Home',
