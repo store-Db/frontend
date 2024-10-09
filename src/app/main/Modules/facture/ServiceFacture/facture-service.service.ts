@@ -174,7 +174,7 @@ public GetAllDetailFactures(): Observable<DetailFacture[]> {
 
   addDetailFacture(id:number,detailFacture:DetailFacture):Observable<DetailFacture>{
 
-    return this.http.post<DetailFacture>(this.urlDetailF+"/add/"+id,detailFacture);
+    return this.http.post<DetailFacture>(this.api+"/add/"+id,detailFacture);
     console.log("DetailFacture ajoutee");
   }
 
